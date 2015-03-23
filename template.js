@@ -26,7 +26,7 @@ exports.template = function(grunt, init, done){
     init.process({}, [
         init.prompt('name'),
         init.prompt('author_name'),
-        init.prompt('author_url'),
+        init.prompt('author_email'),
         init.prompt('version', '0.0.1'),
         {
             name: 'zetpo',
