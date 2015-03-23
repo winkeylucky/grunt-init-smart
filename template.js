@@ -1,0 +1,147 @@
+/*
+ * smart-init-build
+ * https://github.com/hankewins/smart-init-build
+ *
+ * Copyright (c) 2015 hankewins
+ * Licensed under the MIT license.
+ */
+
+'use strict';
+
+// Basic template description.
+exports.description = '创建一个smart项目.';
+
+// Template-specific notes to be displayed before question prompts.
+exports.notes = '';
+
+// Template-specific notes to be displayed after question prompts.
+exports.after = '请先执行npm install, 之后再使用grunt.';
+
+// Any existing file or directory matching this wildcard will cause a warning.
+exports.warnOn = '*';
+
+// The actual init template.
+exports.template = function(grunt, init, done){
+    // See the "Inside an init template" section.
+    init.process({}, [
+        init.prompt('name'),
+        init.prompt('author_name', 'smart team'),
+        init.prompt('version', '0.0.1'),
+        {
+            name: 'zetpo',
+            message: 'Do you want to use zepto?',
+            default: 'Y/n'
+        },
+        {
+            name: 'css_tool',
+            message: 'Which one do you use, Stylus or compass?',
+            default: 'S/c'
+        },
+        {
+            name: 'merge_file',
+            message: 'Do you want to merge css/js files?',
+            default: 'Y/n'
+        },
+        {
+            name: 'static_path',
+            message: 'Set the static path, such as "../../repos".',
+            default: ''
+        }
+    ], function(err, props){
+        props.name = props.name.toLocaleLowerCase();
+        props.devDependencies = {
+            "grunt-contrib-cssmin": "^0.12.2",
+            'grunt-contrib-uglify': "~0.5.0",
+            'grunt-contrib-watch': '~0.6.1'
+        };
+
+        var staticPath = props.static_path.replace(/\s+/, ''),
+            appName = props.name, cssStylus = /s/i.test(props.css_tool),
+            useZepto = /y/i.test(props.zepto), noMerged = !/y/i.test(props.merge_file),
+            gfReg = new RegExp('Gruntfile' + (cssStylus? '1':'0') + (noMerged? '0':'1') + '\\.js$');
+
+        props.keywords = [];
+        props.repository = '';
+        props.description = 'This is an applation.';
+
+        props.zepto = useZepto;
+        props.subapp = '';
+        props.prefix = '';
+
+        if(staticPath){
+            props.static_path = staticPath.replace(/(\w)$/, '$1/');
+            props.prefix = '~';
+        }
+
+        if(appName.indexOf('.')>-1){
+            var arrName = appName.split('.');
+            props.name = arrName[0];
+            props.subapp = arrName[1];
+        }
+
+        props.appName = props.name.toLocaleUpperCase();
+        props.cssStylus = cssStylus;
+        props.noMerged = noMerged;
+
+        // Files to copy (and process).
+        var exp = /^apps\//i, files = init.filesToCopy(props),
+            folders = noMerged? ['src', 'pic', 'assets/css', 'assets/img'] : ['pic', 'assets/css', 'assets/img'],
+            path = props.static_path + 'apps/' + props.name + (props.subapp? '/'+props.subapp : '') + '/';
+
+        // adjustment
+        if(!noMerged){
+            props.devDependencies['grunt-contrib-concat'] = '~0.4.0';
+        }
+
+        if(cssStylus){
+            props.devDependencies['grunt-contrib-stylus'] = '~0.10.0';
+        } else {
+            props.devDependencies['grunt-contrib-compass'] = '^1.0.1';
+        }
+
+        for(var k in files){
+            if(exp.test(k)){
+                if(!hasmvc && /mvc\//i.test(k)){
+                    delete files[k];
+                    continue;
+                }
+                if(noMerged && /src[\w\/\.]+js$/i.test(k)){
+                    delete files[k];
+                    continue;
+                }
+                if(cssStylus && /src[\w\/\.]+scss$/i.test(k)){
+                    delete files[k];
+                    continue;
+                }
+                if(!cssStylus && /src[\w\/\.]+styl$/i.test(k)){
+                    delete files[k];
+                    continue;
+                }
+
+                var _k = k.replace(exp, path)
+                          .replace(/name([^\/]+)$/gi, props.name + (noMerged? '.source':'') + '$1');
+                files[_k] = files[k];
+                delete files[k];
+            }
+            if(/Gruntfile/.test(k)){
+                if(gfReg.test(k)){
+                    files[k.replace(/\d+(\.js)/g, '$1')] = files[k];
+                    delete files[k];
+                } else {
+                    delete files[k];
+                    continue;
+                }
+            }
+        }
+
+        // Actually copy (and process) files.
+        for(var i=0, len=folders.length; i<len; i++){ grunt.file.mkdir(path+folders[i]); }
+        init.copyAndProcess(files, props);
+
+        // Generate package.json file.
+        init.writePackageJSON('package.json', props);
+
+        // All done!
+        done();
+    });
+};
