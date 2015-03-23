@@ -25,7 +25,8 @@ exports.template = function(grunt, init, done){
     // See the "Inside an init template" section.
     init.process({}, [
         init.prompt('name'),
-        init.prompt('author_name', 'smart team'),
+        init.prompt('author_name'),
+        init.prompt('author_url'),
         init.prompt('version', '0.0.1'),
         {
             name: 'zetpo',
@@ -34,8 +35,8 @@ exports.template = function(grunt, init, done){
         },
         {
             name: 'css_tool',
-            message: 'Which one do you use, Stylus or compass?',
-            default: 'S/c'
+            message: 'Which one do you use, compass or stylus?',
+            default: 'C/s'
         },
         {
             name: 'merge_file',
@@ -49,93 +50,44 @@ exports.template = function(grunt, init, done){
         }
     ], function(err, props){
         props.name = props.name.toLocaleLowerCase();
+        // 默认依赖的grunt-contrib
         props.devDependencies = {
-            "grunt-contrib-cssmin": "^0.12.2",
-            'grunt-contrib-uglify': "~0.5.0",
-            'grunt-contrib-watch': '~0.6.1'
+            "grunt": "~0.4.5",
+            //"grunt-contrib-compass": "^1.0.1",
+            //"grunt-contrib-concat": "~0.4.0",
+            //"grunt-contrib-cssmin": "^0.12.2",
+            "grunt-contrib-jshint": "~0.10.0",
+            "grunt-contrib-uglify": "~0.5.0",
+            "grunt-contrib-watch": "~0.6.1"
+
         };
 
-        var staticPath = props.static_path.replace(/\s+/, ''),
-            appName = props.name, cssStylus = /s/i.test(props.css_tool),
-            useZepto = /y/i.test(props.zepto), noMerged = !/y/i.test(props.merge_file),
-            gfReg = new RegExp('Gruntfile' + (cssStylus? '1':'0') + (noMerged? '0':'1') + '\\.js$');
+        // 默认使用compass:0 stylus:1
+        var compile_css = '' || props.css_tool === 'c' ? 0 : 1;
 
-        props.keywords = [];
-        props.repository = '';
-        props.description = 'This is an applation.';
-
-        props.zepto = useZepto;
-        props.subapp = '';
-        props.prefix = '';
-
-        if(staticPath){
-            props.static_path = staticPath.replace(/(\w)$/, '$1/');
-            props.prefix = '~';
-        }
-
-        if(appName.indexOf('.')>-1){
-            var arrName = appName.split('.');
-            props.name = arrName[0];
-            props.subapp = arrName[1];
-        }
-
-        props.appName = props.name.toLocaleUpperCase();
-        props.cssStylus = cssStylus;
-        props.noMerged = noMerged;
-
-        // Files to copy (and process).
-        var exp = /^apps\//i, files = init.filesToCopy(props),
-            folders = noMerged? ['src', 'pic', 'assets/css', 'assets/img'] : ['pic', 'assets/css', 'assets/img'],
-            path = props.static_path + 'apps/' + props.name + (props.subapp? '/'+props.subapp : '') + '/';
-
-        // adjustment
-        if(!noMerged){
-            props.devDependencies['grunt-contrib-concat'] = '~0.4.0';
-        }
-
-        if(cssStylus){
+        if(compile_css === 1){
             props.devDependencies['grunt-contrib-stylus'] = '~0.10.0';
         } else {
             props.devDependencies['grunt-contrib-compass'] = '^1.0.1';
         }
 
-        for(var k in files){
-            if(exp.test(k)){
-                if(!hasmvc && /mvc\//i.test(k)){
-                    delete files[k];
-                    continue;
-                }
-                if(noMerged && /src[\w\/\.]+js$/i.test(k)){
-                    delete files[k];
-                    continue;
-                }
-                if(cssStylus && /src[\w\/\.]+scss$/i.test(k)){
-                    delete files[k];
-                    continue;
-                }
-                if(!cssStylus && /src[\w\/\.]+styl$/i.test(k)){
-                    delete files[k];
-                    continue;
-                }
+        var folders = ['assets/css','assets/pic','assets/img','assets/js'];
+        var staticAssets  = './';
+        var staticResPath = props.static_path + 'apps/' + props.name + (props.subname ? '/' + props.subname : '') + '/';
+        var staticSysPath = props.static_path + 'sys/';
 
-                var _k = k.replace(exp, path)
-                          .replace(/name([^\/]+)$/gi, props.name + (noMerged? '.source':'') + '$1');
-                files[_k] = files[k];
-                delete files[k];
-            }
-            if(/Gruntfile/.test(k)){
-                if(gfReg.test(k)){
-                    files[k.replace(/\d+(\.js)/g, '$1')] = files[k];
-                    delete files[k];
-                } else {
-                    delete files[k];
-                    continue;
-                }
-            }
+        var files = init.filesToCopy(props);
+
+        for(var f in files){
+            console.log(f);
         }
 
         // Actually copy (and process) files.
-        for(var i=0, len=folders.length; i<len; i++){ grunt.file.mkdir(path+folders[i]); }
+        for(var i=0, len=folders.length; i<len; i++){
+            //console.log('---'+staticResPath+folders[i]+'---');
+            grunt.file.mkdir(staticAssets+folders[i]);
+        }
+
         init.copyAndProcess(files, props);
 
         // Generate package.json file.
