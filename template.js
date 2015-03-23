@@ -63,7 +63,7 @@ exports.template = function(grunt, init, done){
         };
 
         // 默认使用compass:0 stylus:1
-        var compile_css = '' || props.css_tool === 'c' ? 0 : 1;
+        var compile_css = props.css_tool == 'C' ? 0 : 1;
 
         if(compile_css === 1){
             props.devDependencies['grunt-contrib-stylus'] = '~0.10.0';
