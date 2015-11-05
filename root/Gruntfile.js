@@ -1,6 +1,6 @@
 /*
  * grunt-init-smart
- * https://github.com/hankewins/smart-init-build
+ * https://github.com/hankewins/grunt-init-smart
  *
  * Copyright (c) 2015 hankewins
  * Licensed under the MIT license.

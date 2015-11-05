@@ -11,7 +11,7 @@
 2. 然后把模版文件复制到`~/.grunt-init/`(`%USERPROFILE%\.grunt-init\` on Windows)文件夹里。如下所示：
 
 ```
-git clone https://github.com/hankewins/smart-init-build.git ~/.grunt-init/smart
+git clone https://github.com/hankewins/grunt-init-smart.git ~/.grunt-init/smart
 ```
 
 _(Windows users, see [the documentation][grunt-init] for the correct destination directory path)_
