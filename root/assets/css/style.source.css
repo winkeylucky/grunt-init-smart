@@ -1,0 +1,107 @@
+@charset "UTF-8";
+/*only support webkit browser*/
+/*public vars*/
+/*color vars*/
+/*text vars*/
+/*space vars*/
+/*screen min-width, min-height*/
+/*
+ * 1rem=20px for 320px(中低端分辨率).
+ * 1rem=22.5px for 360px(高端分辨率).
+ */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 20px;
+  -webkit-text-size-adjust: none;
+}
+
+@media all and (min-width: 359px) {
+  .uc-hack {
+    font-size: 22.5px;
+  }
+}
+@media all and (min-width: 359px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  html {
+    font-size: 22.5px;
+  }
+}
+body, div, p, form, input, h1, h2, h3, h4, h5, ul, ol, li, dl, dt, dd, table, tbody, tr, td, textarea, img, iframe, figure {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  vertical-align: middle;
+}
+
+body {
+  font: 14px/1.5 "\5FAE\8F6F\96C5\9ED1",Helvetica,Arial;
+  color: #000;
+  -webkit-text-size-adjust: none;
+}
+
+img {
+  border: 0;
+  -webkit-touch-callout: none;
+}
+
+a, *[onclick] {
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+  color: #000;
+}
+
+a:active, a:hover {
+  outline: none;
+}
+
+/* 来自yahoo, 让标题都自定义, 适应多个系统应用 */
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  font-weight: 500;
+}
+
+/**
+ * ==============================================================================
+ * 功能性的函数命名规则为：fn-函数功能名称
+ * ==============================================================================
+ */
+/**
+ * 自定义方向小箭头
+ * 
+ * @param $wh 	宽度和高度
+ * @param $mrt 	margin-top位置
+ * @param $posr postion right位置
+ * @param $bw 	边框宽度
+ * @param $bc 	边框颜色
+ * @param $der 	箭头方向
+ */
+/**
+ * new add
+ */
+/**
+ * @param $name 自定义字体的名称
+ * @param $path 算定义字体的路径
+ */
+/**
+ * 解决css3动画引起页面图片及文字抖动问题
+ */
+/**
+ * 清除浮动
+ */
+/**
+ * 超出的文字自动隐藏
+ */
+/**
+ * 网站图片变灰（适合特殊事件、特定时间），目前仅主流浏览器支持（移动端浏览器暂不支持）
+ */
+/**
+ * 移动端点击高度的设置
+ */
+/**
+ * --------------------------------------------------------------------------
+ * ++ 页面顶部带返回功能的panel基本样式 STYLE
+ * -------------------------------------------------------------------------
+ */
+/** code your stylesheet in here. */

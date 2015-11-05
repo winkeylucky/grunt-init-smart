@@ -1,5 +1,5 @@
 /*
- * smart-init-build
+ * grunt-init-smart
  * https://github.com/hankewins/smart-init-build
  *
  * Copyright (c) 2015 hankewins
@@ -9,10 +9,10 @@
 'use strict';
 
 // Basic template description.
-exports.description = '创建一个smart项目.';
+exports.description = '创建smartTeam专属模板，带文件编译、合并、压缩以及图片优化等.';
 
 // Template-specific notes to be displayed before question prompts.
-exports.notes = '';
+exports.notes = '下面将通过Grunt-init-smart自动生成项目结构：';
 
 // Template-specific notes to be displayed after question prompts.
 exports.after = '请先执行npm install, 之后再使用grunt.';
@@ -25,73 +25,42 @@ exports.template = function(grunt, init, done){
     // See the "Inside an init template" section.
     init.process({}, [
         init.prompt('name'),
+        init.prompt('title'),
+        init.prompt('description', 'smartTeam项目结构'),
+        init.prompt('version', '1.0.0'),
         init.prompt('author_name'),
         init.prompt('author_email'),
-        init.prompt('version', '0.0.1'),
-        {
-            name: 'zetpo',
-            message: 'Do you want to use zepto?',
-            default: 'Y/n'
-        },
-        {
-            name: 'css_tool',
-            message: 'Which one do you use, compass or stylus?',
-            default: 'C/s'
-        },
-        {
-            name: 'merge_file',
-            message: 'Do you want to merge css/js files?',
-            default: 'Y/n'
-        },
-        {
-            name: 'static_path',
-            message: 'Set the static path, such as "../../repos".',
-            default: ''
-        }
     ], function(err, props){
-        props.name = props.name.toLocaleLowerCase();
-        // 默认依赖的grunt-contrib
-        props.devDependencies = {
-            "grunt": "~0.4.5",
-            //"grunt-contrib-compass": "^1.0.1",
-            //"grunt-contrib-concat": "~0.4.0",
-            //"grunt-contrib-cssmin": "^0.12.2",
-            "grunt-contrib-jshint": "~0.10.0",
-            "grunt-contrib-uglify": "~0.5.0",
-            "grunt-contrib-watch": "~0.6.1"
 
-        };
+        props.keywords = [];
 
-        // 默认使用compass:0 stylus:1
-        var compile_css = props.css_tool == 'C' ? 0 : 1;
-
-        if(compile_css === 1){
-            props.devDependencies['grunt-contrib-stylus'] = '~0.10.0';
-        } else {
-            props.devDependencies['grunt-contrib-compass'] = '^1.0.1';
-        }
-
-        var folders = ['assets/css','assets/pic','assets/img','assets/js'];
-        var staticAssets  = './';
-        var staticResPath = props.static_path + 'apps/' + props.name + (props.subname ? '/' + props.subname : '') + '/';
-        var staticSysPath = props.static_path + 'sys/';
-
+        // 需要拷贝处理的文件，这句一般不用改它
         var files = init.filesToCopy(props);
 
-        for(var f in files){
-            console.log(f);
-        }
+        // 实际修改跟处理的文件，noProcess表示不进行处理
+        init.copyAndProcess(files, props, {noProcess: 'libs/**'});
 
-        // Actually copy (and process) files.
-        for(var i=0, len=folders.length; i<len; i++){
-            //console.log('---'+staticResPath+folders[i]+'---');
-            grunt.file.mkdir(staticAssets+folders[i]);
-        }
-
-        init.copyAndProcess(files, props);
-
-        // Generate package.json file.
-        init.writePackageJSON('package.json', props);
+        // 生成package.json，供Grunt、npm使用
+        init.writePackageJSON('package.json', {
+            name: 'SmartTeam-PROJ',
+            version: '0.0.0-ignored',
+            npm_test: 'grunt qunit',
+            node_version: '>= 0.10.0',
+            devDependencies: {
+                "grunt-contrib-compass": "^1.0.1",
+                "grunt-contrib-concat": "~0.4.0",
+                "grunt-contrib-cssmin": "^0.12.2",
+                "grunt-contrib-jshint": "~0.10.0",
+                "grunt-contrib-uglify": "~0.5.0",
+                "grunt-contrib-watch": "~0.6.1",
+                "grunt-contrib-clean": "^0.6.0",
+                "grunt-contrib-concat": "^0.5.1",
+                "grunt-contrib-copy": "^0.8.2",
+                "grunt-contrib-imagemin": "^0.9.4",
+                "load-grunt-tasks": "^3.1.0",
+                "time-grunt": "^1.1.1"
+            },
+        });
 
         // All done!
         done();

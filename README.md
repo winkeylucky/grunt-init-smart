@@ -1,25 +1,27 @@
-## smart-init-build
-=========
+# grunt-init-smart
+
+> 用[grunt-init][]构件一个SmartTeam项目结构,包含文件编译、压缩、合并以及图片文件的优化等。
 
 [grunt-init]: http://gruntjs.com/project-scaffolding
 
-> 用[grunt-init][]构建一个移动端项目, 项目中包含固定的目录结构、CSS编译、文件合并、压缩、打包上传等。
-
 ## Installation
+
 1. 请先安装[grunt-init][].
 
-2. 再把模版文件复制到`~/.grunt-init/`(`%USERPROFILE%\.grunt-init\` on Windows)文件夹里。如下所示：
+2. 然后把模版文件复制到`~/.grunt-init/`(`%USERPROFILE%\.grunt-init\` on Windows)文件夹里。如下所示：
 
 ```
-git clone https://github.com/hankewins/smart-init-build.git ~/.grunt-init/smart-init-build
+git clone https://github.com/hankewins/smart-init-build.git ~/.grunt-init/smart
 ```
+
+_(Windows users, see [the documentation][grunt-init] for the correct destination directory path)_
 
 ## Usage
 
 在命令行中，cd进入空文件夹里，运行如下的命令：
 
 ```
-grunt-init smart-init-build
+grunt-init smart
 ```
 
 _Note that this template will generate files in the current directory, so be sure to change to a new directory first if you don't want to overwrite existing files._
