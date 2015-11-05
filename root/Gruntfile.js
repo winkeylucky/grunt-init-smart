@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'dest/assets',
                     src: ['**/*'],
-                    dest: staticResPath + '/call'
+                    dest: staticResPath + '/' + pkg.name
                 }]
             },
             html: {
@@ -201,40 +201,14 @@ module.exports = function(grunt) {
             //         livereload:true
             //     }
             // }
-        },
-        requirejs: {
-            compile: {
-                options: {
-                    baseUrl: "assets/js",
-                    dir: 'build/js',
-                    removeCombined: true,
-                    mainConfigFile: "assets/js/common.js",
-                    modules: [{
-                        //module names are relative to baseUrl/paths config
-                        name: 'main-index',
-                        include: [],
-                        exclude: ['common']
-                    }]
-                }
-            }
         }
     });
 
 
     //默认被执行的任务列表
-    grunt.registerTask('default', ['compass', 'cssmin', 'uglify', 'watch']);
+    grunt.registerTask('default', ['compass', 'watch']);
     
-    grunt.registerTask('team', [
-        'copy', //复制文件
-        'concat', //合并文件
-        'imagemin', //图片压缩
-        'cssmin', //CSS压缩
-        'uglify', //JS压缩
-        'usemin', //HTML处理
-        'htmlmin' //HTML压缩
-    ]);
-
-    // 测试
+    // 发布到dest目录
     grunt.registerTask('test', [
         'clean:all', 
         'compass', 
@@ -244,13 +218,17 @@ module.exports = function(grunt) {
         'usemin'
     ]);
 
-    // 发布
+    // 图片压缩
+    grunt.registerTask('imagemin',[
+        'imagemin'
+    ]);
+
+    // 发布到assets目录
     grunt.registerTask('publish', [
         'clean:all', 
         'copy:html', 
         'cssmin', 
         'uglify', 
-        'imagemin', 
         'copy:all'
     ]);
 

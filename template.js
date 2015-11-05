@@ -38,11 +38,11 @@ exports.template = function(grunt, init, done){
         var files = init.filesToCopy(props);
 
         // 实际修改跟处理的文件，noProcess表示不进行处理
-        init.copyAndProcess(files, props, {noProcess: 'libs/**'});
+        init.copyAndProcess(files, props/*, {noProcess: 'libs/**'}*/);
 
         // 生成package.json，供Grunt、npm使用
         init.writePackageJSON('package.json', {
-            name: 'SmartTeam-PROJ',
+            name: props.name,
             version: '0.0.0-ignored',
             npm_test: 'grunt qunit',
             node_version: '>= 0.10.0',
@@ -54,7 +54,6 @@ exports.template = function(grunt, init, done){
                 "grunt-contrib-uglify": "~0.5.0",
                 "grunt-contrib-watch": "~0.6.1",
                 "grunt-contrib-clean": "^0.6.0",
-                "grunt-contrib-concat": "^0.5.1",
                 "grunt-contrib-copy": "^0.8.2",
                 "grunt-contrib-imagemin": "^0.9.4",
                 "load-grunt-tasks": "^3.1.0",
