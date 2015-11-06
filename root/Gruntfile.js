@@ -108,7 +108,12 @@ module.exports = function(grunt) {
         compass: {
             build: {
                 options: {
-                    config: './assets/src/config.rb'
+                    require: 'lookitui',
+                    sassDir: './assets/src',
+                    cssDir: './assets/css',
+                    imagesDir: './assets/img',
+                    javascriptsDir: './assets/js',
+                    noLineComments: true
                 }
             }
         },
@@ -187,7 +192,7 @@ module.exports = function(grunt) {
         watch: {
             css: {
                 files: ['assets/src/*.scss'],
-                tasks: ['compass', 'cssmin']
+                tasks: ['compass']
             }
             /*,
                 js: {
