@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'dest/assets',
                     src: ['**/*'],
-                    dest: staticResPath + '/' + pkg.name
+                    dest: staticResPath + '/' + '<%= pkg.name %>'
                 }]
             },
             html: {
