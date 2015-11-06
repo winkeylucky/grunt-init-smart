@@ -9,7 +9,7 @@
 'use strict';
 
 // Basic template description.
-exports.description = '创建smartTeam专属模板，带文件编译、合并、压缩以及图片优化等.';
+exports.description = '自动生成项目模板，自带合并压缩等.';
 
 // Template-specific notes to be displayed before question prompts.
 exports.notes = '下面将通过Grunt-init-smart自动生成项目结构：';
@@ -26,7 +26,7 @@ exports.template = function(grunt, init, done){
     init.process({}, [
         init.prompt('name'),
         init.prompt('title'),
-        init.prompt('description', 'smartTeam项目结构'),
+        init.prompt('description', 'Grunt-init-smart自动生成项目基本结构！'),
         init.prompt('version', '1.0.0'),
         init.prompt('author_name'),
         init.prompt('author_email'),
@@ -55,6 +55,7 @@ exports.template = function(grunt, init, done){
                 "grunt-contrib-watch": "~0.6.1",
                 "grunt-contrib-clean": "^0.6.0",
                 "grunt-contrib-copy": "^0.8.2",
+                "grunt-usemin": "^3.1.1",
                 "grunt-contrib-imagemin": "^0.9.4",
                 "load-grunt-tasks": "^3.1.0",
                 "time-grunt": "^1.1.1"
