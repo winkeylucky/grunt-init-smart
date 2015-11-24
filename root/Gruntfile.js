@@ -120,6 +120,14 @@ module.exports = function(grunt) {
 
         // 压缩JS
         uglify: {
+            prod_zepto: {
+                options: {
+                    banner: '/*! Zepto 1.1.6 - zepto event data touch ajax - zeptojs.com/license */\n',
+                },
+                files:{
+                    'dest/assets/js/zepto.min.js':['bower_components/zeptojs/src/zepto.js','bower_components/zeptojs/src/event.js','bower_components/zeptojs/src/data.js','bower_components/zeptojs/src/touch.js','bower_components/zeptojs/src/ajax.js']
+                }
+            },
             prod_dot_source: {
                 options: {
                     banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
@@ -217,14 +225,14 @@ module.exports = function(grunt) {
     grunt.registerTask('test', [
         'clean:all', 
         'compass', 
-        'copy:html', 
+        'copy:html',
         'cssmin', 
         'uglify', 
         'usemin'
     ]);
 
     // 图片压缩
-    grunt.registerTask('imagemin',[
+    grunt.registerTask('imgmin',[
         'imagemin'
     ]);
 
@@ -232,8 +240,9 @@ module.exports = function(grunt) {
     grunt.registerTask('publish', [
         'clean:all', 
         'copy:html', 
-        'cssmin', 
-        'uglify', 
+        'cssmin',
+        'uglify',
+        'imagemin',
         'copy:all'
     ]);
 
