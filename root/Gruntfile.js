@@ -217,6 +217,13 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.registerTask('useminTask', [
+        'useminPrepare',
+        'concat:generated',
+        'cssmin:generated',
+        'uglify:generated',
+        'usemin'
+    ]);
 
     //默认被执行的任务列表
     grunt.registerTask('default', ['compass', 'watch']);
@@ -224,24 +231,21 @@ module.exports = function(grunt) {
     // 发布到dest目录
     grunt.registerTask('test', [
         'clean:all', 
-        'compass', 
         'copy:html',
+        'uglify',
+        'useminTask',
         'cssmin', 
-        'uglify', 
-        'usemin'
     ]);
 
-    // 图片压缩
-    grunt.registerTask('imgmin',[
-        'imagemin'
-    ]);
+    grunt.registerTask('imgmin', ['imagemin']);
 
     // 发布到assets目录
     grunt.registerTask('publish', [
         'clean:all', 
         'copy:html', 
-        'cssmin',
         'uglify',
+        'useminTask',
+        'cssmin', 
         'imagemin',
         'copy:all'
     ]);
