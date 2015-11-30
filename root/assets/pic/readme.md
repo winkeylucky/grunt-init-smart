@@ -1,1 +1,0 @@
-## pic 目录下后缀为.xxx.png,.xxx.jpg,.xxx.gif,.xxx.webp的文件将被复制到assets目录中。
