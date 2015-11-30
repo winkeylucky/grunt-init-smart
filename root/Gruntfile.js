@@ -169,12 +169,12 @@ module.exports = function(grunt) {
             }
         },
 
-        // useminPrepare: {
-        //     html: ['*.html'],
-        //     options: {
-        //         dest: './'               
-        //     }
-        // },
+        useminPrepare: {
+            html: ['*.html'],
+            options: {
+                dest: 'dest/'               
+            }
+        },
 
         // 处理html中css、js 引入合并问题
         usemin: {
