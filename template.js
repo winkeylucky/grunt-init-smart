@@ -56,7 +56,7 @@ exports.template = function(grunt, init, done){
                 "grunt-contrib-clean": "^0.6.0",
                 "grunt-contrib-copy": "^0.8.2",
                 "grunt-usemin": "^3.1.1",
-                "grunt-contrib-imagemin": "^0.9.4",
+                "grunt-contrib-imagemin": "~1.0.0",
                 "load-grunt-tasks": "^3.1.0",
                 "time-grunt": "^1.1.1"
             },
